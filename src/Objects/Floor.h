@@ -1,3 +1,4 @@
+// Floor.h
 #ifndef FLOOR_H
 #define FLOOR_H
 
@@ -5,6 +6,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "../shader.hpp"
+#include "Drawable.h"
 
 struct Vertex {
     glm::vec3 Position;
@@ -12,10 +14,14 @@ struct Vertex {
     glm::vec2 TexCoords;
 };
 
-class Floor {
+class Floor : public Drawable {
 public:
+    Floor();
     Floor(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
-    void draw(const Shader& shader) const;
+    void draw(const Shader& shader) const override;
+    glm::vec3 getBoundingBoxMin() const override;
+    glm::vec3 getBoundingBoxMax() const override;
+    void computeBoundingBox();
 
 private:
     std::vector<Vertex> vertices;
@@ -23,6 +29,8 @@ private:
     GLuint VAO, VBO, EBO;
 
     void setupMesh();
+    glm::vec3 boundingBoxMin;
+    glm::vec3 boundingBoxMax;
 };
 
 #endif

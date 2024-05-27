@@ -3,10 +3,19 @@
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : position(position), worldUp(up), yaw(yaw), pitch(pitch), movementSpeed(2.5f), mouseSensitivity(0.0018f) {
     updateCameraVectors();
+    setProjection(45.0f, 1500.0f / 1200.0f, 0.1f, 100.0f);
 }
 
 glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(position, position + front, up);
+}
+
+glm::mat4 Camera::getProjectionMatrix() const {
+    return projectionMatrix;
+}
+
+void Camera::setProjection(float fov, float aspect, float near, float far) {
+    projectionMatrix = glm::perspective(glm::radians(fov), aspect, near, far);
 }
 
 void Camera::processKeyboard(int key, float deltaTime) {

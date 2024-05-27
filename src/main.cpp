@@ -14,9 +14,13 @@
 #include "shader.hpp"
 #include "Objects/Floor.h"
 #include "Objects/Camera.h"
+#include "scene.h"
 
 using namespace glm;
 using namespace std;
+
+const float SCREEN_HEIGHT = 1500;
+const float SCREEN_WIDTH = 1200;
 
 const char *getError()
 {
@@ -53,7 +57,7 @@ inline GLFWwindow *setUp()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
     GLFWwindow *window;                                            // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(1500, 1200, "Kiosk Rendering", NULL, NULL);
+    window = glfwCreateWindow(SCREEN_HEIGHT, SCREEN_WIDTH, "Kiosk Rendering", NULL, NULL);
     if (window == NULL)
     {
         cout << getError() << endl;
@@ -68,8 +72,8 @@ inline GLFWwindow *setUp()
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     static bool firstMouse = true;
-    static float lastX = 800.0f / 2.0; // Center of the screen
-    static float lastY = 600.0 / 2.0;
+    static float lastX = SCREEN_HEIGHT / 2.0; // Center of the screen
+    static float lastY = SCREEN_WIDTH / 2.0;
 
     static Camera* camera = reinterpret_cast<Camera*>(glfwGetWindowUserPointer(window));
 
@@ -125,7 +129,7 @@ void setupScene(Floor& floor) {
     floor = Floor(floorVertices, floorIndices);
 }
 
-void renderScene(const Floor& floor, const Shader& shader, const Camera& camera) {
+void renderScene(const Scene& scene, const Shader& shader, const Camera& camera) {
     shader.use();
 
     // Create transformations
@@ -139,18 +143,16 @@ void renderScene(const Floor& floor, const Shader& shader, const Camera& camera)
     shader.setMat4("model", model);
 
     // Render floor
-    floor.draw(shader);
+    scene.draw(shader);
 }
 
 int main()
 {
     GLFWwindow *window;
-    try
-    {
+    try{
         window = setUp();
     }
-    catch (const char *e)
-    {
+    catch (const char *e){
         cout << e << endl;
         throw;
     }
@@ -165,49 +167,38 @@ int main()
     glBindVertexArray(VertexArrayID);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    cout << glfwGetInputMode(window, GLFW_CURSOR);
 
     Shader shader("vertex.glsl", "fragment.glsl");
 
-    Floor floor = Floor(vector<Vertex>(), vector<unsigned int>());  // Initializing with dummy data
-
+    Scene scene;
     Camera camera(glm::vec3(0.0f, 1.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetWindowUserPointer(window, &camera); //
     
-    setupScene(floor);
-
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     double lastTime = glfwGetTime();
 
-    bool wireframeMode = true;
-    bool enterPressed = false;
-
-    do
-    {
+    do{
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         processInput(window, camera, deltaTime);
-        renderScene(floor, shader, camera);
+        scene.updateFrustum(camera.getProjectionMatrix(), camera.getViewMatrix());
+        // renderScene(scene, shader, camera);
+        shader.use();
+        shader.setMat4("view", camera.getViewMatrix());
+        shader.setMat4("projection", camera.getProjectionMatrix());
+        shader.setMat4("model", glm::mat4(1.0f));
+
+        scene.render(shader, camera);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
-
-        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE) {
-            if (!enterPressed) {
-                wireframeMode = !wireframeMode;
-                std::this_thread::sleep_for(std::chrono::milliseconds(200)); 
-            }
-            enterPressed = true;
-        } else {
-            enterPressed = false;
-        }
 
         lastTime = currentTime;
         // cout << "FPS: " << 1 / deltaTime << endl;

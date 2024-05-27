@@ -10,6 +10,9 @@ public:
     Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch);
 
     glm::mat4 getViewMatrix() const;
+    glm::mat4 getProjectionMatrix() const;
+    void setProjection(float fov, float aspect, float near, float far);
+
     void processKeyboard(int key, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
 
@@ -22,10 +25,17 @@ private:
 
     float yaw;
     float pitch;
+    
+    float fov;
+    float aspect;
+    float near;
+    float far;
+
     float movementSpeed;
     float mouseSensitivity;
 
     void updateCameraVectors();
+    glm::mat4 projectionMatrix;
 };
 
 #endif
