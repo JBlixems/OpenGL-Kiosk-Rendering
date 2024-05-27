@@ -72,7 +72,7 @@ inline GLFWwindow *setUp()
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     static bool firstMouse = true;
-    static float lastX = SCREEN_HEIGHT / 2.0; // Center of the screen
+    static float lastX = SCREEN_HEIGHT / 2.0;
     static float lastY = SCREEN_WIDTH / 2.0;
 
     static Camera* camera = reinterpret_cast<Camera*>(glfwGetWindowUserPointer(window));
@@ -85,7 +85,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     }
 
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // Reversed since y-coordinates range from bottom to top
+    float yoffset = lastY - ypos;
     lastX = xpos;
     lastY = ypos;
 
@@ -109,43 +109,6 @@ void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
         camera.processKeyboard(GLFW_KEY_LEFT_CONTROL, deltaTime);
 }
 
-void setupScene(Floor& floor) {
-    // Load shaders
-    Shader shader("vertex.glsl", "fragment.glsl");
-
-    // Define vertices and indices for the floor
-    std::vector<Vertex> floorVertices = {
-        // Positions          // Normals          // Texture Coords
-        {{-5.0f, 0.0f, -5.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-        {{ 5.0f, 0.0f, -5.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
-        {{ 5.0f, 0.0f,  5.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
-        {{-5.0f, 0.0f,  5.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}}
-    };
-    std::vector<unsigned int> floorIndices = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    floor = Floor(floorVertices, floorIndices);
-}
-
-void renderScene(const Scene& scene, const Shader& shader, const Camera& camera) {
-    shader.use();
-
-    // Create transformations
-    glm::mat4 view = camera.getViewMatrix();
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1500.0f / 1200.0f, 0.1f, 100.0f);
-    glm::mat4 model = glm::mat4(1.0f);
-
-    // Pass matrices to the shader
-    shader.setMat4("view", view);
-    shader.setMat4("projection", projection);
-    shader.setMat4("model", model);
-
-    // Render floor
-    scene.draw(shader);
-}
-
 int main()
 {
     GLFWwindow *window;
@@ -157,24 +120,15 @@ int main()
         throw;
     }
 
-    // Hide the cursor and capture it
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-
-    GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
-
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
     Shader shader("vertex.glsl", "fragment.glsl");
-
     Scene scene;
     Camera camera(glm::vec3(0.0f, 1.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetWindowUserPointer(window, &camera); //
+    glfwSetWindowUserPointer(window, &camera);
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -188,8 +142,8 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         processInput(window, camera, deltaTime);
+
         scene.updateFrustum(camera.getProjectionMatrix(), camera.getViewMatrix());
-        // renderScene(scene, shader, camera);
         shader.use();
         shader.setMat4("view", camera.getViewMatrix());
         shader.setMat4("projection", camera.getProjectionMatrix());

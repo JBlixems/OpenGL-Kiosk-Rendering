@@ -16,7 +16,6 @@ public:
     void addObject(const std::shared_ptr<Drawable>& object);
     void render(const Shader& shader, const Camera& camera) const;
     void updateFrustum(const glm::mat4& projection, const glm::mat4& view);
-    void draw(const Shader& shader) const;
 
 private:
     std::vector<std::shared_ptr<Drawable>> objects;

@@ -21,9 +21,3 @@ void Scene::render(const Shader& shader, const Camera& camera) const {
 void Scene::updateFrustum(const glm::mat4& projection, const glm::mat4& view) {
     frustumCulling.updateFrustum(projection, view);
 }
-
-void Scene::draw(const Shader& shader) const {
-    for (const auto& object : objects) {
-        object->draw(shader);
-    }
-}
