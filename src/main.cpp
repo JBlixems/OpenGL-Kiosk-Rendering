@@ -3,7 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <thread>
-#include <chrono> 
+#include <random>
+#include <chrono>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -11,8 +12,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "shader.hpp"
-#include "Objects/Camera.h"
 #include "Objects/Floor.h"
+#include "Objects/Camera.h"
 
 using namespace glm;
 using namespace std;
@@ -64,35 +65,80 @@ inline GLFWwindow *setUp()
     return window;
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    static bool firstMouse = true;
+    static float lastX = 800.0f / 2.0; // Center of the screen
+    static float lastY = 600.0 / 2.0;
+
+    static Camera* camera = reinterpret_cast<Camera*>(glfwGetWindowUserPointer(window));
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // Reversed since y-coordinates range from bottom to top
+    lastX = xpos;
+    lastY = ypos;
+
+    camera->processMouseMovement(xoffset, yoffset);
+}
+
+// Process keyboard inputs to move the camera
+void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
+{
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.processKeyboard(GLFW_KEY_W, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.processKeyboard(GLFW_KEY_S, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.processKeyboard(GLFW_KEY_A, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.processKeyboard(GLFW_KEY_D, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.processKeyboard(GLFW_KEY_LEFT_SHIFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.processKeyboard(GLFW_KEY_LEFT_CONTROL, deltaTime);
+}
+
 void setupScene(Floor& floor) {
-    // Setup floor vertices and indices
-    vector<Vertex> floorVertices = {
-        // positions          // normals          // texture coords
-        { glm::vec3(-5.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f) },
-        { glm::vec3( 5.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f) },
-        { glm::vec3( 5.0f, -0.5f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f) },
-        { glm::vec3(-5.0f, -0.5f,  5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f) }
+    // Load shaders
+    Shader shader("vertex.glsl", "fragment.glsl");
+
+    // Define vertices and indices for the floor
+    std::vector<Vertex> floorVertices = {
+        // Positions          // Normals          // Texture Coords
+        {{-5.0f, 0.0f, -5.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 5.0f, 0.0f, -5.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+        {{ 5.0f, 0.0f,  5.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
+        {{-5.0f, 0.0f,  5.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}}
     };
-    vector<unsigned int> floorIndices = {
-        0, 1, 2, 
+    std::vector<unsigned int> floorIndices = {
+        0, 1, 2,
         2, 3, 0
     };
 
-    // Initialize the floor object
     floor = Floor(floorVertices, floorIndices);
 }
 
 void renderScene(const Floor& floor, const Shader& shader, const Camera& camera) {
     shader.use();
 
+    // Create transformations
     glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1500.0f / 1200.0f, 0.1f, 100.0f);
     glm::mat4 model = glm::mat4(1.0f);
 
+    // Pass matrices to the shader
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
     shader.setMat4("model", model);
 
+    // Render floor
     floor.draw(shader);
 }
 
@@ -108,7 +154,10 @@ int main()
         cout << e << endl;
         throw;
     }
-    
+
+    // Hide the cursor and capture it
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
     GLuint VertexArrayID;
@@ -116,42 +165,53 @@ int main()
     glBindVertexArray(VertexArrayID);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    cout << glfwGetInputMode(window, GLFW_CURSOR);
 
     Shader shader("vertex.glsl", "fragment.glsl");
+
     Floor floor = Floor(vector<Vertex>(), vector<unsigned int>());  // Initializing with dummy data
+
+    Camera camera(glm::vec3(0.0f, 1.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetWindowUserPointer(window, &camera); //
+    
     setupScene(floor);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Camera camera(glm::vec3(0.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
-
     double lastTime = glfwGetTime();
+
     bool wireframeMode = true;
     bool enterPressed = false;
 
-    do {
+    do
+    {
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            camera.processKeyboard(GLFW_KEY_W, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            camera.processKeyboard(GLFW_KEY_S, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            camera.processKeyboard(GLFW_KEY_A, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            camera.processKeyboard(GLFW_KEY_D, deltaTime);
-
+        processInput(window, camera, deltaTime);
         renderScene(floor, shader, camera);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
 
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE) {
+            if (!enterPressed) {
+                wireframeMode = !wireframeMode;
+                std::this_thread::sleep_for(std::chrono::milliseconds(200)); 
+            }
+            enterPressed = true;
+        } else {
+            enterPressed = false;
+        }
+
         lastTime = currentTime;
+        // cout << "FPS: " << 1 / deltaTime << endl;
+
     } while (glfwGetKey(window, GLFW_KEY_SPACE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
 
     glfwDestroyWindow(window);

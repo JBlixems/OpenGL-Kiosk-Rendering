@@ -11,6 +11,7 @@ public:
 
     glm::mat4 getViewMatrix() const;
     void processKeyboard(int key, float deltaTime);
+    void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
 
 private:
     glm::vec3 position;
@@ -21,6 +22,8 @@ private:
 
     float yaw;
     float pitch;
+    float movementSpeed;
+    float mouseSensitivity;
 
     void updateCameraVectors();
 };
