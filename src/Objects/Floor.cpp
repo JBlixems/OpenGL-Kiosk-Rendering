@@ -1,8 +1,9 @@
 #include "Floor.h"
+#include <iostream>
 #include <algorithm>
 #include <limits>
 
-Floor::Floor(){
+Floor::Floor() {
     // Define vertices and indices for the floor
     vertices = {
         // Positions          // Normals          // Texture Coords
@@ -17,6 +18,7 @@ Floor::Floor(){
     };
     setupMesh();
     computeBoundingBox();
+    loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/HEIN.jpg");
 }
 
 Floor::Floor(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
@@ -53,7 +55,46 @@ void Floor::setupMesh() {
     glBindVertexArray(0);
 }
 
+void Floor::loadTexture(const std::string& path) {
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
+    if (data) {
+        GLenum format;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        std::cout << "Texture loaded: " << path << " (" << width << "x" << height << ", " << nrComponents << " components)" << std::endl;
+
+        stbi_image_free(data);
+    } else {
+        std::cout << "Failed to load texture: " << path << std::endl;
+        std::cout << "Error: " << stbi_failure_reason() << std::endl;
+        stbi_image_free(data);
+    }
+}
+
 void Floor::draw(const Shader& shader) const {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    shader.use();
+    shader.setInt("texture_diffuse", 0); 
+
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

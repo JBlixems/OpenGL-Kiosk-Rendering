@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include "../shader.hpp"
 #include "Drawable.h"
+#include "../include/stb_image.h"
 
 struct Vertex {
     glm::vec3 Position;
@@ -27,8 +28,10 @@ private:
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     GLuint VAO, VBO, EBO;
+    GLuint textureID;
 
     void setupMesh();
+    void loadTexture(const std::string& path);
     glm::vec3 boundingBoxMin;
     glm::vec3 boundingBoxMax;
 };

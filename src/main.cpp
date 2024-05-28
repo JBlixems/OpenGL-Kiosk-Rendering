@@ -148,6 +148,7 @@ int main()
         shader.setMat4("view", camera.getViewMatrix());
         shader.setMat4("projection", camera.getProjectionMatrix());
         shader.setMat4("model", glm::mat4(1.0f));
+        shader.setInt("texture_diffuse", 0);
 
         scene.render(shader, camera);
 
