@@ -1,32 +1,36 @@
-// Floor.h
-#ifndef FLOOR_H
-#define FLOOR_H
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "../shader.hpp"
-#include "Drawable.h"
+#include "drawable.h"
 #include "../include/stb_image.h"
 
-class Floor : public Drawable {
+class Window: public Drawable {
 public:
-    Floor();
-    void draw(const Shader& shader) const override;
+    Window(float width, float height, float depth, const glm::vec3& position);
+    // ~Window();
     glm::vec3 getBoundingBoxMin() const override;
     glm::vec3 getBoundingBoxMax() const override;
     void computeBoundingBox();
 
+    void draw(const Shader& shader) const;
+
 private:
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    GLuint VAO, VBO, EBO;
-    GLuint textureID;
+    unsigned int VAO, VBO, EBO;
+    unsigned int textureID;
+
+    float width, height, depth;
+    glm::vec3 position;
 
     void setupMesh();
-    void loadTexture(const std::string& path);
+    void loadTexture(const char* texturePath);
     glm::vec3 boundingBoxMin;
     glm::vec3 boundingBoxMax;
 };
 
-#endif
+#endif // WINDOW_H

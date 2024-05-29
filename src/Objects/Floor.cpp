@@ -11,11 +11,11 @@ Floor::Floor() {
     float halfWidth = (gridWidth * quadSize) / 2.0f;
     float halfDepth = (gridDepth * quadSize) / 2.0f;
 
-    glm::vec3 plainGrey(0.598, 0.582, 0.543);
-    glm::vec3 darkGrey(0.314, 0.314, 0.314);
-    glm::vec3 yellow(0.765, 0.569, 0.243);
+    glm::vec4 plainGrey(0.598, 0.582, 0.543, 1);
+    glm::vec4 darkGrey(0.314, 0.314, 0.314, 1);
+    glm::vec4 yellow(0.765, 0.569, 0.243, 1);
 
-    glm::vec3 selectedColor = plainGrey;
+    glm::vec4 selectedColor = plainGrey;
     int vertexCounter = 0;
     bool flip = false;
     for (int z = 0; z < gridDepth; ++z) {
@@ -88,7 +88,7 @@ void Floor::setupMesh() {
 
     // Vertex Colors
     glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 
     glBindVertexArray(0);
 }

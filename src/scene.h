@@ -8,7 +8,7 @@
 #include "Objects/Floor.h"
 #include "Objects/Drawable.h"
 #include "Objects/Camera.h"
-// Include other object headers like Wall, Roof, Drone, etc.
+#include "Objects/Window.h"
 
 class Scene {
 public:

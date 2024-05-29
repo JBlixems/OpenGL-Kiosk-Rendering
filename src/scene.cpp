@@ -1,9 +1,13 @@
 // Scene.cpp
 #include "Scene.h"
+#include <iostream>
 
 Scene::Scene() {
     Floor floor = Floor();
+    Window window = Window(1.0f, 1.0f, 0.1f, glm::vec3(0.0f, 0.0f, 0.0f));
+
     addObject(std::make_shared<Floor>(floor));
+    addObject(std::make_shared<Window>(window));
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {
