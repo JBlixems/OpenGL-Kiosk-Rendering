@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-    : position(position), worldUp(up), yaw(yaw), pitch(pitch), movementSpeed(2.5f), mouseSensitivity(0.0018f) {
+    : position(position), worldUp(up), yaw(yaw), pitch(pitch), movementSpeed(3.5f), mouseSensitivity(0.0025f) {
     updateCameraVectors();
     setProjection(45.0f, 1500.0f / 1200.0f, 0.1f, 100.0f);
 }

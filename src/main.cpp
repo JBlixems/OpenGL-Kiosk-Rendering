@@ -109,6 +109,18 @@ void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
         camera.processKeyboard(GLFW_KEY_LEFT_CONTROL, deltaTime);
 }
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    static bool wireframe = false;
+    if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
+        wireframe = !wireframe;
+        if (wireframe) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+    }
+}
+
 int main()
 {
     GLFWwindow *window;
@@ -124,7 +136,8 @@ int main()
     Scene scene;
     Camera camera(glm::vec3(0.0f, 1.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.79f, 0.91f, 0.97f, 1.0f);
+    glfwSetKeyCallback(window, key_callback);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
