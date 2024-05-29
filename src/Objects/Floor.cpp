@@ -27,14 +27,12 @@ Floor::Floor() {
             float z0 = z * quadSize - halfDepth;
             float z1 = (z + 1) * quadSize - halfDepth;
 
-            std::cout << x0 << " " << x1 << " " << z0 << " " << z1 << std::endl;
-
             selectedColor = plainGrey;
-            if((z + 1) % 13 == 0 && (((x < 6 || x > 10) && z < 91) || z > 91)){
+            if((z + 1) % 13 == 0 && (((x < 6 || x > 9) && z < 91) || z > 91)){
                 selectedColor = yellow;
                 flip = !flip;
             } 
-            else if(x < 11 || (x > 17 && x < 30) || x > 35) selectedColor = darkGrey;
+            else if(x < 10 || (x > 17 && x < 30) || x > 35) selectedColor = darkGrey;
 
             if(flip && selectedColor == darkGrey && (x > 17 && x < 30)){
                 selectedColor = plainGrey;
@@ -134,6 +132,19 @@ void Floor::draw(const Shader& shader) const {
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     shader.use();
+
+    // Set material properties
+    glm::vec3 matAmbient = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey ambient color
+    glm::vec3 white = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 matDiffuse = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey diffuse color
+    glm::vec3 matSpecular = glm::vec3(0.5f, 0.5f, 0.5f); // Grey specular color
+    float matShininess = 100.0f;  // Shininess factor
+
+    shader.setVec3("material.ambient", white);
+    shader.setVec3("material.diffuse", white);
+    shader.setVec3("material.specular", white);
+    shader.setFloat("material.shininess", matShininess);
+
     shader.setInt("texture_diffuse", 0);
     shader.setBool("useColor", false);
 

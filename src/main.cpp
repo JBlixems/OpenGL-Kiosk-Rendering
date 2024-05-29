@@ -69,6 +69,19 @@ inline GLFWwindow *setUp()
     return window;
 }
 
+void setupLighting(Shader &shader) {
+    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+    glm::vec3 lightAmbient = glm::vec3(0.3f, 0.3f, 0.1f);
+    glm::vec3 lightDiffuse = glm::vec3(0.8f, 0.8f, 0.3f);
+    glm::vec3 lightSpecular = glm::vec3(1.0f, 1.0f, 0.8f);
+
+    shader.use();
+    shader.setVec3("dirLight.direction", lightDir);
+    shader.setVec3("dirLight.ambient", lightAmbient);
+    shader.setVec3("dirLight.diffuse", lightDiffuse);
+    shader.setVec3("dirLight.specular", lightSpecular);
+}
+
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     static bool firstMouse = true;
@@ -147,6 +160,8 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    setupLighting(shader);
+
     double lastTime = glfwGetTime();
 
     do{
@@ -161,7 +176,8 @@ int main()
         shader.setMat4("view", camera.getViewMatrix());
         shader.setMat4("projection", camera.getProjectionMatrix());
         shader.setMat4("model", glm::mat4(1.0f));
-        shader.setInt("texture_diffuse", 0);
+        shader.setVec3("viewPos", camera.getPosition());
+        // shader.setInt("texture_diffuse", 0);
 
         scene.render(shader, camera);
 

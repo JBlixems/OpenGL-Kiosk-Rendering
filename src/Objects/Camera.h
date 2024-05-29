@@ -15,6 +15,7 @@ public:
 
     void processKeyboard(int key, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
+    glm::vec3 getPosition() const;
 
 private:
     glm::vec3 position;
