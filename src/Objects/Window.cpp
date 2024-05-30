@@ -4,88 +4,96 @@
 #include <algorithm>
 #include <limits>
 
-Window::Window(float width, float height, float depth, const glm::vec3& position)
+Window::Window(float width, float height, float depth, const glm::vec3& position, bool left, bool right)
     : width(width), height(height), depth(depth), position(position) {
 
-    glm::vec4 color = glm::vec4(0.5f, 1.0f, 1.0f, 0.4f); // Light blue color
+    glm::vec4 color = glm::vec4(0.5f, 1.0f, 1.0f, 0.1f); // Light blue color
     glm::vec4 frameColor = glm::vec4(0.75f, 0.75f, 0.75f, 1.0f); // Silver frame color
 
-    // Vertices for the window
-    vertices = {
-        // Front face
-        {{-width, -height, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, color},
-        {{ width, -height, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, color},
-        {{ width,  height, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, color},
-        {{-width,  height, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, color},
+    float halfWidth = width / 2.0f;
+    float halfHeight = height / 2.0f;
+    float frameThickness = 0.05f; // Frame thickness
 
-        // Back face
-        {{-width, -height, depth}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, color},
-        {{ width, -height, depth}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, color},
-        {{ width,  height, depth}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, color},
-        {{-width,  height, depth}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, color}
-    };
 
-    // Vertices for the frame
-    float frameDepth = depth + depth*1.5;
-
-    float frameTop = height + 1;
-    float frameBottom = -height - 1;
-
-    // Front face of the top frame
-    vertices.push_back({{-width, frameTop, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, frameColor});
-    vertices.push_back({{ width, frameTop, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, frameColor});
-    vertices.push_back({{ width, frameTop, frameDepth}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, frameColor});
-    vertices.push_back({{-width, frameTop, frameDepth}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, frameColor});
-
-    // Front face of the bottom frame
-    vertices.push_back({{-width, frameBottom, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, frameColor});
-    vertices.push_back({{ width, frameBottom, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, frameColor});
-    vertices.push_back({{ width, frameBottom, frameDepth}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, frameColor});
-    vertices.push_back({{-width, frameBottom, frameDepth}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, frameColor});
-
-    // Side faces of the frame
-    vertices.push_back({{-width, frameTop, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, frameColor});
-    vertices.push_back({{-width, frameBottom, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, frameColor});
-    vertices.push_back({{-width, frameBottom, frameDepth}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, frameColor});
-    vertices.push_back({{-width, frameTop, frameDepth}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, frameColor});
-
-    vertices.push_back({{width, frameTop, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, frameColor});
-    vertices.push_back({{width, frameBottom, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, frameColor});
-    vertices.push_back({{width, frameBottom, frameDepth}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, frameColor});
-    vertices.push_back({{width, frameTop, frameDepth}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, frameColor});
-
-    // Update indices for the window with frame
-    int numVerticesWithoutFrame = 8;
-    int numVerticesWithFrame = vertices.size();
-
-    for (int i = numVerticesWithoutFrame; i < numVerticesWithFrame; i += 4) {
-        indices.push_back(i);
-        indices.push_back(i + 1);
-        indices.push_back(i + 2);
-        indices.push_back(i + 2);
-        indices.push_back(i + 3);
-        indices.push_back(i);
-    }
-
-    indices.push_back(0);
-    indices.push_back(1);
-    indices.push_back(2);
-    indices.push_back(2);
-    indices.push_back(3);
-    indices.push_back(0);
-
-    indices.push_back(4);
-    indices.push_back(5);
-    indices.push_back(6);
-    indices.push_back(6);
-    indices.push_back(7);
-    indices.push_back(4);
-
+    // Frame vertices (top, bottom, left, right)
+    addPrismVertices(-halfWidth - frameThickness, halfHeight, halfWidth + frameThickness, halfHeight + frameThickness, 0.0f, depth + frameThickness, frameColor); // Top frame
+    addPrismVertices(-halfWidth - frameThickness, -halfHeight - frameThickness, halfWidth + frameThickness, -halfHeight, 0.0f, depth + frameThickness, frameColor); // Bottom frame
+    if(left)
+        addPrismVertices(-halfWidth - frameThickness, -halfHeight, -halfWidth, halfHeight, 0.0f, depth + frameThickness, frameColor); // Left frame
+    
+    if(right)
+        addPrismVertices(halfWidth, -halfHeight, halfWidth + frameThickness, halfHeight, 0.0f, depth + frameThickness, frameColor); // Right frame
+    
+    // Window vertices
+    addPrismVertices(-halfWidth, -halfHeight, halfWidth, halfHeight, 0.0f, depth, color);
 
     setupMesh();
     computeBoundingBox();
-    loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/carpet.jpg");
 }
+
+void Window::addPrismVertices(float x0, float y0, float x1, float y1, float z0, float z1, const glm::vec4& color) {
+    unsigned int baseIndex = vertices.size();
+
+    // Front face
+    vertices.push_back({{x0 + position.x, y0 + position.y, z0 + position.z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y0 + position.y, z0 + position.z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y1 + position.y, z0 + position.z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, color});
+    vertices.push_back({{x0 + position.x, y1 + position.y, z0 + position.z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, color});
+
+    // Back face
+    vertices.push_back({{x0 + position.x, y0 + position.y, z1 + position.z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y0 + position.y, z1 + position.z}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y1 + position.y, z1 + position.z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, color});
+    vertices.push_back({{x0 + position.x, y1 + position.y, z1 + position.z}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}, color});
+
+    // Top face
+    vertices.push_back({{x0 + position.x, y1 + position.y, z0 + position.z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y1 + position.y, z0 + position.z}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y1 + position.y, z1 + position.z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, color});
+    vertices.push_back({{x0 + position.x, y1 + position.y, z1 + position.z}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}, color});
+
+    // Bottom face
+    vertices.push_back({{x0 + position.x, y0 + position.y, z0 + position.z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y0 + position.y, z0 + position.z}, {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y0 + position.y, z1 + position.z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, color});
+    vertices.push_back({{x0 + position.x, y0 + position.y, z1 + position.z}, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f}, color});
+
+    // Left face
+    vertices.push_back({{x0 + position.x, y0 + position.y, z0 + position.z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, color});
+    vertices.push_back({{x0 + position.x, y1 + position.y, z0 + position.z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, color});
+    vertices.push_back({{x0 + position.x, y1 + position.y, z1 + position.z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, color});
+    vertices.push_back({{x0 + position.x, y0 + position.y, z1 + position.z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, color});
+
+    // Right face
+    vertices.push_back({{x1 + position.x, y0 + position.y, z0 + position.z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y1 + position.y, z0 + position.z}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, color});
+    vertices.push_back({{x1 + position.x, y1 + position.y, z1 + position.z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, color});
+    vertices.push_back({{x1 + position.x, y0 + position.y, z1 + position.z}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, color});
+
+    // Indices for each face
+    std::vector<unsigned int> prismIndices = {
+        // Front face
+        baseIndex + 0, baseIndex + 1, baseIndex + 2,
+        baseIndex + 2, baseIndex + 3, baseIndex + 0,
+        // Back face
+        baseIndex + 4, baseIndex + 5, baseIndex + 6,
+        baseIndex + 6, baseIndex + 7, baseIndex + 4,
+        // Top face
+        baseIndex + 8, baseIndex + 9, baseIndex + 10,
+        baseIndex + 10, baseIndex + 11, baseIndex + 8,
+        // Bottom face
+        baseIndex + 12, baseIndex + 13, baseIndex + 14,
+        baseIndex + 14, baseIndex + 15, baseIndex + 12,
+        // Left face
+        baseIndex + 16, baseIndex + 17, baseIndex + 18,
+        baseIndex + 18, baseIndex + 19, baseIndex + 16,
+        // Right face
+        baseIndex + 20, baseIndex + 21, baseIndex + 22,
+        baseIndex + 22, baseIndex + 23, baseIndex + 20
+    };
+    indices.insert(indices.end(), prismIndices.begin(), prismIndices.end());
+}
+
 
 void Window::draw(const Shader& shader) const {
     shader.use();

@@ -71,7 +71,8 @@ inline GLFWwindow *setUp()
 
 void setupLighting(Shader &shader) {
     glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-    glm::vec3 lightAmbient = glm::vec3(0.3f, 0.3f, 0.1f);
+    // glm::vec3 lightAmbient = glm::vec3(0.3f, 0.3f, 0.1f);
+    glm::vec3 lightAmbient = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 lightDiffuse = glm::vec3(0.8f, 0.8f, 0.3f);
     glm::vec3 lightSpecular = glm::vec3(1.0f, 1.0f, 0.8f);
 

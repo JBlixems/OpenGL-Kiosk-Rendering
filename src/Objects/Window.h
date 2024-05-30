@@ -10,8 +10,8 @@
 
 class Window: public Drawable {
 public:
-    Window(float width, float height, float depth, const glm::vec3& position);
-    // ~Window();
+    Window(float width, float height, float depth, const glm::vec3& position, bool, bool);
+    void addPrismVertices(float x0, float y0, float x1, float y1, float z0, float z1, const glm::vec4& color);
     glm::vec3 getBoundingBoxMin() const override;
     glm::vec3 getBoundingBoxMax() const override;
     void computeBoundingBox();
