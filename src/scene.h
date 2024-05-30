@@ -9,6 +9,7 @@
 #include "Objects/Drawable.h"
 #include "Objects/Camera.h"
 #include "Objects/Window.h"
+#include "Objects/NorthWall.h"
 
 class Scene {
 public:

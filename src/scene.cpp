@@ -59,6 +59,10 @@ Scene::Scene() {
     addObject(std::make_shared<Window>(windowSet61));
     addObject(std::make_shared<Window>(windowSet63));
     addObject(std::make_shared<Window>(windowSet62));
+
+    //North wall
+    NorthWall northWall = NorthWall(0.1f, 40.0f, 60.0f, glm::vec3(8.43f, 0.65f, -23.15f));
+    addObject(std::make_shared<NorthWall>(northWall));
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {
@@ -66,11 +70,14 @@ void Scene::addObject(const std::shared_ptr<Drawable>& object) {
 }
 
 void Scene::render(const Shader& shader, const Camera& camera) const {
+    int drawing = 0;
     for (const auto& object : objects) {
         if (frustumCulling.isBoxInFrustum(object->getBoundingBoxMin(), object->getBoundingBoxMax())) {
             object->draw(shader);
+            drawing++;
         }
     }
+    std::cout << "Drawing " << drawing << " objects" << std::endl;
 }
 
 void Scene::updateFrustum(const glm::mat4& projection, const glm::mat4& view) {
