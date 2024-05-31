@@ -10,7 +10,7 @@
 
 class NorthWall: public Drawable {
 public:
-    NorthWall(float width, float height, float depth, const glm::vec3& position);
+    NorthWall(float width, float height, float depth, const glm::vec3& position, float angle, bool right);
     void addPrismVertices(float x0, float y0, float x1, float y1, float z0, float z1, const glm::vec4& color);
     void addFaceVertices(float x0, float y0, float z0, float x1, float y1, float z1, const glm::vec3& normal, const glm::vec4& color);
     glm::vec3 getBoundingBoxMin() const override;

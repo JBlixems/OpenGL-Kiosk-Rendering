@@ -4,18 +4,59 @@
 #include <algorithm>
 #include <limits>
 
-NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& position)
+NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& position, float angle, bool right)
     : width(width), height(height), depth(depth), position(position) {
 
-    glm::vec4 wallColor = glm::vec4(0.75f, 0.75f, 0.75f, 1.0f); // Example color
+    float slantAngle = glm::radians(angle);  // Slant angle in radians
+    float quadSize = 0.3f;  // Size of each quad
 
-    float halfWidth = width / 2.0f;
-    float halfHeight = height / 2.0f;
-    float halfDepth = depth / 2.0f;
+    int gridWidth = static_cast<int>(height / quadSize);  // Number of quads in width
+    int gridDepth = static_cast<int>(depth / quadSize);  // Number of quads in depth
 
-    // Front face
-    addFaceVertices(-halfWidth + position.x, -halfHeight + position.y, -halfDepth + position.z, halfWidth + position.x, halfHeight + position.y, halfDepth + position.z, {0.0f, 0.0f, 1.0f}, wallColor);
+    float halfWidth = (gridWidth * quadSize) / 2.0f;
+    float halfDepth = (gridDepth * quadSize) / 2.0f;
 
+    glm::vec4 plainGrey(0.598, 0.582, 0.543, 1);
+
+    glm::vec4 selectedColor = plainGrey;
+    int vertexCounter = 0;
+    bool flip = false;
+    glm::vec3 normal;
+    if(angle == 0)
+        normal = glm::vec3(0.0f, 1.0f, 0.0f);
+    else if(right)
+        normal = glm::vec3(1.0f*cos(slantAngle), 1.0f*sin(90 + slantAngle), 0.0f);
+    else
+        normal = glm::vec3(-1.0f*cos(slantAngle), 1.0f*sin(90 - slantAngle), 0.0f);
+
+    for (int z = 0; z < gridDepth; ++z) {
+        for (int x = 0; x < gridWidth; ++x) {            
+            float x0 = x * quadSize - halfWidth;
+            float x1 = (x + 1) * quadSize - halfWidth;
+            float z0 = z * quadSize - halfDepth;
+            float z1 = (z + 1) * quadSize - halfDepth;
+
+            selectedColor = plainGrey;
+
+            // Apply slant to y-coordinates
+            float slantOffset0 = tan(slantAngle) * (x0);
+            float slantOffset1 = tan(slantAngle) * (x1);
+
+            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z0 + position.z}, normal, {0.0f, 0.0f}, selectedColor});
+            vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z0 + position.z}, normal, {1.0f, 0.0f}, selectedColor});
+            vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z1 + position.z}, normal, {1.0f, 1.0f}, selectedColor});
+            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z1 + position.z}, normal, {0.0f, 1.0f}, selectedColor});
+
+            indices.push_back(vertexCounter + 0);
+            indices.push_back(vertexCounter + 1);
+            indices.push_back(vertexCounter + 2);
+            indices.push_back(vertexCounter + 2);
+            indices.push_back(vertexCounter + 3);
+            indices.push_back(vertexCounter + 0);
+
+            vertexCounter += 4;
+        }
+    }
     setupMesh();
     computeBoundingBox();
     loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/wallTile.png");

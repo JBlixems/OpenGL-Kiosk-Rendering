@@ -6,6 +6,46 @@ Scene::Scene() {
     Floor floor = Floor();
     addObject(std::make_shared<Floor>(floor));
 
+    //North wall
+    NorthWall northWall1 = NorthWall(0.1f, 0.7f, 60.0f, glm::vec3(10.25f, 0.75f, 0.0f), 70.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall1));
+    NorthWall northWall2 = NorthWall(0.1f, 0.7f, 60.0f, glm::vec3(10.25f, 2.4f, 0.0f), -70.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall2));
+    NorthWall northWall3 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(10.55f, 4.85f, 0.0f), 70.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall3));
+    NorthWall northWall4 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(11.75f, 6.49f, 0.0f), 0.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall4));
+    NorthWall northWall5 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(11.0f, 8.85f, 0.0f), 70.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall5));
+    NorthWall northWall6 = NorthWall(0.1f, 1.8f, 60.0f, glm::vec3(11.15f, 7.21f, 0.0f), 0.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall6));
+    NorthWall northWall7 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(12.19f, 10.5f, 0.0f), 0.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall7));
+    NorthWall northWall8 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(12.19f, 11.5f, 0.0f), 0.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall8));
+    NorthWall northWall9 = NorthWall(0.1f, 0.8f, 60.0f, glm::vec3(11.89f, 13.2f, 0.0f), 80.0f, true);
+    addObject(std::make_shared<NorthWall>(northWall9));
+
+    //South wall
+    NorthWall southWall1 = NorthWall(0.1f, 0.7f, 60.0f, glm::vec3(-10.25f, 0.75f, 0.0f), -70.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall1));
+    NorthWall southWall2 = NorthWall(0.1f, 0.7f, 60.0f, glm::vec3(-10.25f, 2.4f, 0.0f), 70.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall2));
+    NorthWall southWall3 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(-10.55f, 4.85f, 0.0f), -70.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall3));
+    NorthWall southWall4 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(-11.75f, 6.49f, 0.0f), 0.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall4));
+    NorthWall southWall5 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(-11.0f, 8.85f, 0.0f), -70.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall5));
+    NorthWall southWall6 = NorthWall(0.1f, 1.8f, 60.0f, glm::vec3(-11.15f, 7.21f, 0.0f), 0.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall6));
+    NorthWall southWall7 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(-12.19f, 10.5f, 0.0f), 0.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall7));
+    NorthWall southWall8 = NorthWall(0.1f, 1.2f, 60.0f, glm::vec3(-12.19f, 11.5f, 0.0f), 0.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall8));
+    NorthWall southWall9 = NorthWall(0.1f, 0.8f, 60.0f, glm::vec3(-11.89f, 13.2f, 0.0f), -80.0f, false);
+    addObject(std::make_shared<NorthWall>(southWall9));
+
     //Set 1
     Window windowSet11 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 2.85f), true, false);
     Window windowSet12 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, 2.85f), false, false);
@@ -59,10 +99,6 @@ Scene::Scene() {
     addObject(std::make_shared<Window>(windowSet61));
     addObject(std::make_shared<Window>(windowSet63));
     addObject(std::make_shared<Window>(windowSet62));
-
-    //North wall
-    NorthWall northWall = NorthWall(0.1f, 40.0f, 60.0f, glm::vec3(8.43f, 0.65f, -23.15f));
-    addObject(std::make_shared<NorthWall>(northWall));
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {
