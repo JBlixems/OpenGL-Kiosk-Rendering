@@ -10,6 +10,7 @@
 #include "Objects/Camera.h"
 #include "Objects/Window.h"
 #include "Objects/NorthWall.h"
+#include "Objects/EastWall.h"
 
 class Scene {
 public:

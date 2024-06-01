@@ -122,6 +122,88 @@ Scene::Scene() {
     addObject(std::make_shared<Window>(windowSet61));
     addObject(std::make_shared<Window>(windowSet63));
     addObject(std::make_shared<Window>(windowSet62));
+
+    //East wall
+    EastWall eastWall1 = EastWall(12.5f, 19.0f, 1.0f, glm::vec3(-5.8f, 1.0f, 29.7f));
+    addObject(std::make_shared<EastWall>(eastWall1));
+
+    EastWall eastWall2 = EastWall(4.0f, 16.0f, 1.0f, glm::vec3(-13.7f, 1.0f, 29.7f));
+    addObject(std::make_shared<EastWall>(eastWall2));
+
+    EastWall eastWall3 = EastWall(4.0f, 16.0f, 1.0f, glm::vec3(9.72f, 1.0f, 29.7f));
+    addObject(std::make_shared<EastWall>(eastWall3));
+
+    float currentH = 7.0f;
+    for (int i = 0; i < 6; i++)
+    {
+        float height = 1.5f + (i%2);
+        float width = 1.58f;
+        if((i%2) == 1){
+            height += 0.2f;
+            Window wind1 = Window(width, height, 0.2f, glm::vec3(-9.1f, currentH + 0.6f, 30.3f), true, true, false);
+            Window wind2 = Window(width, height, 0.2f, glm::vec3(-9.1f + width + 0.1, currentH + 0.6f, 30.3f), true, true, false);
+            addObject(std::make_shared<Window>(wind1));
+            addObject(std::make_shared<Window>(wind2));
+        }else{
+            Window wind1 = Window(width, height, 0.2f, glm::vec3(-9.1f, currentH, 30.3f), true, true, false);
+            Window wind2 = Window(width, height, 0.2f, glm::vec3(-9.1f + width + 0.1, currentH, 30.3f), true, true, false);
+            addObject(std::make_shared<Window>(wind1));
+            addObject(std::make_shared<Window>(wind2));
+        }
+
+        currentH += height;
+    }
+
+    currentH = 7.0f;
+    for (int i = 0; i < 6; i++)
+    {
+        float height = 1.5f + (i%2);
+        float width = 1.58f;
+        if((i%2) == 1){
+            height += 0.2f;
+            Window wind1 = Window(width, height, 0.2f, glm::vec3(6.92f, currentH + 0.6f, 30.3f), true, true, false);
+            Window wind2 = Window(width, height, 0.2f, glm::vec3(6.92f + width + 0.1, currentH + 0.6f, 30.3f), true, true, false);
+            addObject(std::make_shared<Window>(wind1));
+            addObject(std::make_shared<Window>(wind2));
+        }else{
+            Window wind1 = Window(width, height, 0.2f, glm::vec3(6.92f, currentH, 30.3f), true, true, false);
+            Window wind2 = Window(width, height, 0.2f, glm::vec3(6.92f + width + 0.1, currentH, 30.3f), true, true, false);
+            addObject(std::make_shared<Window>(wind1));
+            addObject(std::make_shared<Window>(wind2));
+        }
+
+        currentH += height;
+    }
+
+    //West wall
+    EastWall westWall2 = EastWall(4.0f, 16.0f, 1.0f, glm::vec3(-13.7f, 1.0f, -29.7f));
+    addObject(std::make_shared<EastWall>(westWall2));
+
+    EastWall westWall3 = EastWall(4.0f, 16.0f, 1.0f, glm::vec3(9.72f, 1.0f, -29.7f));
+    addObject(std::make_shared<EastWall>(westWall3));
+
+    currentH = 0.8f;
+    for (int i = 0; i < 10; i++)
+    {
+        float height = 1.5f + (i%2);
+        float width = 1.61f;
+
+        if((i%2) == 1){
+            height += 0.2f;
+        }
+        for (int j = 0; j < 12; j++)
+        {
+            if((i%2) == 1){
+                Window wind1 = Window(width, height, 0.2f, glm::vec3(-9.1f + width*j, currentH + 0.6f, -30.3f), true, true, false);
+                addObject(std::make_shared<Window>(wind1));
+            }else{
+                Window wind1 = Window(width, height, 0.2f, glm::vec3(-9.1f + width*j, currentH, -30.3f), true, true, false);
+                addObject(std::make_shared<Window>(wind1));
+            }
+
+        }
+        currentH += height;
+    }
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {
