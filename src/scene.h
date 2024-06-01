@@ -11,6 +11,7 @@
 #include "Objects/Window.h"
 #include "Objects/NorthWall.h"
 #include "Objects/EastWall.h"
+#include "Objects/Roof.h"
 
 class Scene {
 public:

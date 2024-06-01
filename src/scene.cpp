@@ -183,7 +183,7 @@ Scene::Scene() {
     addObject(std::make_shared<EastWall>(westWall3));
 
     currentH = 0.8f;
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 8; i++)
     {
         float height = 1.5f + (i%2);
         float width = 1.61f;
@@ -204,6 +204,10 @@ Scene::Scene() {
         }
         currentH += height;
     }
+
+    //Roof
+    Roof roof = Roof(50.0f, 62.0f, glm::vec3(0.0f, -33.5f, -32.0f), 60);
+    addObject(std::make_shared<Roof>(roof));
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {

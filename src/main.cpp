@@ -73,7 +73,7 @@ void setupLighting(Shader &shader) {
     glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
     // glm::vec3 lightAmbient = glm::vec3(0.3f, 0.3f, 0.1f);
     glm::vec3 lightAmbient = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightDiffuse = glm::vec3(0.8f, 0.8f, 0.3f);
+    glm::vec3 lightDiffuse = glm::vec3(0.8f, 0.8f, 0.8f);
     glm::vec3 lightSpecular = glm::vec3(1.0f, 1.0f, 0.8f);
 
     shader.use();
@@ -178,7 +178,6 @@ int main()
         shader.setMat4("projection", camera.getProjectionMatrix());
         shader.setMat4("model", glm::mat4(1.0f));
         shader.setVec3("viewPos", camera.getPosition());
-        // shader.setInt("texture_diffuse", 0);
 
         scene.render(shader, camera);
 
