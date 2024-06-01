@@ -16,11 +16,15 @@ NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& po
     float halfWidth = (gridWidth * quadSize) / 2.0f;
     float halfDepth = (gridDepth * quadSize) / 2.0f;
 
-    glm::vec4 plainGrey(0.598, 0.582, 0.543, 1);
+    glm::vec4 plainGrey(0.698, 0.682, 0.643, 1);
+    glm::vec4 darkGrey(0.248, 0.242, 0.243, 1);
 
     glm::vec4 selectedColor = plainGrey;
+    if(position.y > 13) selectedColor = darkGrey;
+
     int vertexCounter = 0;
     bool flip = false;
+
     glm::vec3 normal;
     if(angle == 0)
         normal = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -36,16 +40,14 @@ NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& po
             float z0 = z * quadSize - halfDepth;
             float z1 = (z + 1) * quadSize - halfDepth;
 
-            selectedColor = plainGrey;
-
             // Apply slant to y-coordinates
             float slantOffset0 = tan(slantAngle) * (x0);
             float slantOffset1 = tan(slantAngle) * (x1);
 
-            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z0 + position.z}, normal, {0.0f, 0.0f}, selectedColor});
-            vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z0 + position.z}, normal, {1.0f, 0.0f}, selectedColor});
+            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z0 + position.z}, normal, {0.8f, 0.8f}, selectedColor});
+            vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z0 + position.z}, normal, {1.0f, 0.8f}, selectedColor});
             vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z1 + position.z}, normal, {1.0f, 1.0f}, selectedColor});
-            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z1 + position.z}, normal, {0.0f, 1.0f}, selectedColor});
+            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z1 + position.z}, normal, {0.8f, 1.0f}, selectedColor});
 
             indices.push_back(vertexCounter + 0);
             indices.push_back(vertexCounter + 1);
@@ -59,7 +61,10 @@ NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& po
     }
     setupMesh();
     computeBoundingBox();
-    loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/wallTile.png");
+    if(position.y < 2.5)
+        loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/wood.png");
+    else
+        loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/tile.png");
 }
 
 void NorthWall::addPrismVertices(float x0, float y0, float x1, float y1, float z0, float z1, const glm::vec4& color) {

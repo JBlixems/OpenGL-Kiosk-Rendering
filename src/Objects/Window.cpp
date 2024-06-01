@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <limits>
 
-Window::Window(float width, float height, float depth, const glm::vec3& position, bool left, bool right)
+Window::Window(float width, float height, float depth, const glm::vec3& position, bool left, bool right, bool sides)
     : width(width), height(height), depth(depth), position(position) {
 
     glm::vec4 color = glm::vec4(0.5f, 1.0f, 1.0f, 0.1f); // Light blue color
@@ -12,6 +12,7 @@ Window::Window(float width, float height, float depth, const glm::vec3& position
 
     float halfWidth = width / 2.0f;
     float halfHeight = height / 2.0f;
+    float halfDepth = depth / 2.0f;
     float frameThickness = 0.05f; // Frame thickness
 
 
@@ -23,6 +24,11 @@ Window::Window(float width, float height, float depth, const glm::vec3& position
     
     if(right)
         addPrismVertices(halfWidth, -halfHeight, halfWidth + frameThickness, halfHeight, 0.0f, depth + frameThickness, frameColor); // Right frame
+    
+    // Draw the fram in the front and back
+    if(sides){
+        addPrismVertices(-halfWidth - frameThickness, -halfHeight, halfWidth + frameThickness, halfHeight,  depth + frameThickness, depth, frameColor); // Back frame
+    }
     
     // Window vertices
     addPrismVertices(-halfWidth, -halfHeight, halfWidth, halfHeight, 0.0f, depth, color);

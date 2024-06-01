@@ -26,6 +26,17 @@ Scene::Scene() {
     NorthWall northWall9 = NorthWall(0.1f, 0.8f, 60.0f, glm::vec3(11.89f, 13.2f, 0.0f), 80.0f, true);
     addObject(std::make_shared<NorthWall>(northWall9));
 
+    //Add many small windows
+    for (int i = 0; i < 60; i++){
+        Window window = Window(0.1f, 0.6f, 1.0f, glm::vec3(12.0f, 6.85f, -30.0f + i), false, false, true);
+        addObject(std::make_shared<Window>(window));
+    }
+
+    for (int i = 0; i < 60; i++){
+        Window window = Window(0.1f, 0.9f, 1.0f, glm::vec3(12.19f, 11.0f, -30.0f + i), false, false, true);
+        addObject(std::make_shared<Window>(window));
+    }
+    
     //South wall
     NorthWall southWall1 = NorthWall(0.1f, 0.7f, 60.0f, glm::vec3(-10.25f, 0.75f, 0.0f), -70.0f, false);
     addObject(std::make_shared<NorthWall>(southWall1));
@@ -46,55 +57,67 @@ Scene::Scene() {
     NorthWall southWall9 = NorthWall(0.1f, 0.8f, 60.0f, glm::vec3(-11.89f, 13.2f, 0.0f), -80.0f, false);
     addObject(std::make_shared<NorthWall>(southWall9));
 
+    //Add many small windows
+    for (int i = 0; i < 60; i++){
+        Window window = Window(0.1f, 0.6f, 1.0f, glm::vec3(-12.0f, 6.85f, -30.0f + i), false, false, true);
+        addObject(std::make_shared<Window>(window));
+    }
+
+    for (int i = 0; i < 60; i++){
+        Window window = Window(0.1f, 0.9f, 1.0f, glm::vec3(-12.19f, 11.0f, -30.0f + i), false, false, true);
+        addObject(std::make_shared<Window>(window));
+    }
+
+    //Windows on the floor
     //Set 1
-    Window windowSet11 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 2.85f), true, false);
-    Window windowSet12 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, 2.85f), false, false);
-    Window windowSet13 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 7.95f), true, false);
+    Window windowSet11 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 2.85f), true, false, false);
+    Window windowSet12 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, 2.85f), false, false, false);
+    Window windowSet13 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 7.95f), true, false, false);
 
     addObject(std::make_shared<Window>(windowSet11));
     addObject(std::make_shared<Window>(windowSet13));
     addObject(std::make_shared<Window>(windowSet12));
 
     //Set 2
-    Window windowSet21 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 9.35f), true, false);
-    Window windowSet22 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, 9.35f), false, false);
-    Window windowSet23 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 14.45f), true, false);
+    Window windowSet21 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 9.35f), true, false, false);
+    Window windowSet22 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, 9.35f), false, false, false);
+    Window windowSet23 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 14.45f), true, false, false);
 
     addObject(std::make_shared<Window>(windowSet21));
     addObject(std::make_shared<Window>(windowSet23));
     addObject(std::make_shared<Window>(windowSet22));
 
     //Set 3
-    Window windowSet31 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -3.65f), true, false);
-    Window windowSet32 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -3.65f), false, false);
-    Window windowSet33 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 1.45f), true, false);
+    Window windowSet31 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -3.65f), true, false, false);
+    Window windowSet32 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -3.65f), false, false, false);
+    Window windowSet33 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, 1.45f), true, false, false);
 
     addObject(std::make_shared<Window>(windowSet31));
     addObject(std::make_shared<Window>(windowSet33));
     addObject(std::make_shared<Window>(windowSet32));
 
     //Set 4
-    Window windowSet41 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -10.15f), true, false);
-    Window windowSet42 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -10.15f), false, false);
-    Window windowSet43 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -5.05f), true, false);
+    Window windowSet41 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -10.15f), true, false, false);
+    Window windowSet42 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -10.15f), false, false, false);
+    Window windowSet43 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -5.05f), true, false, false);
 
     addObject(std::make_shared<Window>(windowSet41));
     addObject(std::make_shared<Window>(windowSet43));
     addObject(std::make_shared<Window>(windowSet42));
 
     //Set 5
-    Window windowSet51 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -16.65f), true, false);
-    Window windowSet52 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -16.65f), false, false);
-    Window windowSet53 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -11.55f), true, false);
+    Window windowSet51 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -16.65f), true, false, false);
+    Window windowSet52 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -16.65f), false, false, false);
+    Window windowSet53 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -11.55f), true, false, false);
 
     addObject(std::make_shared<Window>(windowSet51));
     addObject(std::make_shared<Window>(windowSet53));
     addObject(std::make_shared<Window>(windowSet52));
 
     //Set 6
-    Window windowSet61 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -23.15f), true, false);
-    Window windowSet62 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -23.15f), false, false);
-    Window windowSet63 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -18.05f), true, false);
+    Window windowSet61 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -23.15f), true, false, false);
+    Window windowSet62 = Window(0.1f, 1.2f, 5.1f, glm::vec3(-6.93f, 0.65f, -23.15f), false, false, false);
+    Window windowSet63 = Window(3.1f, 1.2f, 0.1f, glm::vec3(-8.43f, 0.65f, -18.05f), true, false, false);
 
     addObject(std::make_shared<Window>(windowSet61));
     addObject(std::make_shared<Window>(windowSet63));
