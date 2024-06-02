@@ -185,8 +185,8 @@ void EastWall::loadTexture(const char* path) {
 
 // Function to compute bounding box of the window
 void EastWall::computeBoundingBox() {
-    boundingBoxMin = position - glm::vec3(width / 2.0f, height / 2.0f, depth / 2.0f);
-    boundingBoxMax = position + glm::vec3(width / 2.0f, height / 2.0f, depth / 2.0f);
+    boundingBoxMin = position - glm::vec3(width / 2.0f, 0.0f, depth / 2.0f);
+    boundingBoxMax = position + glm::vec3(width / 2.0f, height, depth / 2.0f);
 }
 
 // Function to get minimum bounding box coordinates

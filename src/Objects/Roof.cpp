@@ -7,7 +7,7 @@
 Roof::Roof(float radius, float width, const glm::vec3& position, unsigned int numStrips)
     : radius(radius), width(width), position(position) {
 
-    glm::vec4 opaqueColor = glm::vec4(0.835f, 0.835f, 0.753f, 0.95f);
+    glm::vec4 opaqueColor = glm::vec4(0.7f, 0.7f, 0.45f, 0.95f);
     glm::vec4 transparentColor = glm::vec4(0.678f, 0.82f, 0.937f, 0.7f);
 
     float stripWidth = width / numStrips;
@@ -18,7 +18,7 @@ Roof::Roof(float radius, float width, const glm::vec3& position, unsigned int nu
 
     setupMesh();
     computeBoundingBox();
-    loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/wood.png");
+    loadTexture("/mnt/c/Users/jfmal/OneDrive/Documents/University/3rd Year/COS344/Homework Assignment/OpenGL-Kiosk-Rendering/src/Materials/roof3.png");
 }
 
 void Roof::addCylinderVertices(float radius, float width, const glm::vec3& position, const glm::vec4& color) {
@@ -42,7 +42,7 @@ void Roof::addCylinderVertices(float radius, float width, const glm::vec3& posit
         Vertex vertex;
         vertex.Position = vertexPosition;
         vertex.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
-        vertex.TexCoords = glm::vec2(0.0f, 1.0f);
+        vertex.TexCoords = glm::vec2(0.0f, static_cast<float>(i) / numSegments);
         vertex.Color = color;
 
         vertices.push_back(vertex);
@@ -60,7 +60,7 @@ void Roof::addCylinderVertices(float radius, float width, const glm::vec3& posit
         Vertex vertex;
         vertex.Position = vertexPosition;
         vertex.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
-        vertex.TexCoords = glm::vec2(0.0f, 1.0f);
+        vertex.TexCoords = glm::vec2(1.0f, static_cast<float>(i) / numSegments);
         vertex.Color = color;
 
         vertices.push_back(vertex);
@@ -87,7 +87,7 @@ void Roof::draw(const Shader& shader) const {
     glm::vec3 matAmbient = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey ambient color
     glm::vec3 matDiffuse = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey diffuse color
     glm::vec3 matSpecular = glm::vec3(0.5f, 0.5f, 0.5f); // Grey specular color
-    float matShininess = 10.0f;  // Shininess factor
+    float matShininess = 100.0f;  // Shininess factor
 
     shader.setVec3("material.ambient", matAmbient);
     shader.setVec3("material.diffuse", matDiffuse);
@@ -171,7 +171,7 @@ void Roof::loadTexture(const char* path) {
 
 // Function to compute bounding box of the window
 void Roof::computeBoundingBox() {
-    boundingBoxMin = position - glm::vec3(width / 2.0f, radius, 0.0f);
+    boundingBoxMin = position - glm::vec3(width / 2.0f, radius, -80.0f);
     boundingBoxMax = position + glm::vec3(width / 2.0f, radius, depth);
 }
 
