@@ -19,8 +19,8 @@
 using namespace glm;
 using namespace std;
 
-const float SCREEN_HEIGHT = 1500;
-const float SCREEN_WIDTH = 1200;
+const float SCREEN_HEIGHT = 1000;
+const float SCREEN_WIDTH = 1500;
 
 const char *getError()
 {
@@ -57,7 +57,7 @@ inline GLFWwindow *setUp()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
     GLFWwindow *window;                                            // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(SCREEN_HEIGHT, SCREEN_WIDTH, "Kiosk Rendering", NULL, NULL);
+    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Kiosk Rendering", NULL, NULL);
     if (window == NULL)
     {
         cout << getError() << endl;
