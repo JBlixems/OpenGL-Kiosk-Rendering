@@ -27,7 +27,7 @@ NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& po
 
     glm::vec3 normal;
     if(angle == 0)
-        normal = glm::vec3(0.0f, 1.0f, 0.0f);
+        normal = glm::vec3(0.0f, -1.0f, 0.0f);
     else if(right)
         normal = glm::vec3(1.0f*cos(slantAngle), 1.0f*sin(90 + slantAngle), 0.0f);
     else
@@ -44,10 +44,10 @@ NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& po
             float slantOffset0 = tan(slantAngle) * (x0);
             float slantOffset1 = tan(slantAngle) * (x1);
 
-            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z0 + position.z}, normal, {0.8f, 0.8f}, selectedColor});
-            vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z0 + position.z}, normal, {1.0f, 0.8f}, selectedColor});
+            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z0 + position.z}, normal, {0.95f, 0.95f}, selectedColor});
+            vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z0 + position.z}, normal, {1.0f, 0.95f}, selectedColor});
             vertices.push_back({{x1 + position.x, slantOffset1 + position.y, z1 + position.z}, normal, {1.0f, 1.0f}, selectedColor});
-            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z1 + position.z}, normal, {0.8f, 1.0f}, selectedColor});
+            vertices.push_back({{x0 + position.x, slantOffset0 + position.y, z1 + position.z}, normal, {0.95f, 1.0f}, selectedColor});
 
             indices.push_back(vertexCounter + 0);
             indices.push_back(vertexCounter + 1);
@@ -156,9 +156,9 @@ void NorthWall::draw(const Shader& shader) const {
     shader.use();
 
     // Set material properties
-    glm::vec3 matAmbient = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey ambient color
+    glm::vec3 matAmbient = glm::vec3(0.2f, 0.2f, 0.2f);  // Grey ambient color
     glm::vec3 matDiffuse = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey diffuse color
-    glm::vec3 matSpecular = glm::vec3(0.5f, 0.5f, 0.5f); // Grey specular color
+    glm::vec3 matSpecular = glm::vec3(0.8f, 0.8f, 0.8f); // Grey specular color
     float matShininess = 10.0f;  // Shininess factor
 
     shader.setVec3("material.ambient", matAmbient);

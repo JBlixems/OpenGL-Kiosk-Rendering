@@ -208,6 +208,62 @@ Scene::Scene() {
     //Roof
     Roof roof = Roof(50.0f, 62.0f, glm::vec3(0.0f, -33.5f, -32.0f), 60);
     addObject(std::make_shared<Roof>(roof));
+
+    //White walls
+    WhiteWall whiteWall1 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(1.0f, 1.3f, -15.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall1));
+    WhiteWall whiteWall2 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(3.0f, 1.3f, -15.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall2));
+
+    WhiteWall whiteWall3 = WhiteWall(0.25f, 2.6f, 2.0f, glm::vec3(-1.0f, 1.3f, -20.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall3));
+    WhiteWall whiteWall4 = WhiteWall(0.25f, 2.6f, 2.0f, glm::vec3(-1.0f, 1.3f, -22.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall4));
+
+    WhiteWall whiteWall5 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(-1.0f, 1.3f, -9.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall5));
+    WhiteWall whiteWall6 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(1.0f, 1.3f, -9.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall6));
+    WhiteWall whiteWall7 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(3.0f, 1.3f, -9.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall7));
+
+    WhiteWall whiteWall8 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(2.0f, 1.3f, -2.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall8));
+    WhiteWall whiteWall9 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(4.0f, 1.3f, -2.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall9));
+
+    WhiteWall whiteWall10 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(0.0f, 1.3f, 9.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall10));
+    WhiteWall whiteWall11 = WhiteWall(2.0f, 2.6f, 0.25f, glm::vec3(2.0f, 1.3f, 9.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall11));
+
+    WhiteWall whiteWall12 = WhiteWall(0.25f, 2.6f, 2.0f, glm::vec3(-2.0f, 1.3f, 4.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall12));
+    WhiteWall whiteWall13 = WhiteWall(0.25f, 2.6f, 2.0f, glm::vec3(-2.0f, 1.3f, 6.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall13));
+
+    WhiteWall whiteWall14 = WhiteWall(0.25f, 2.6f, 2.0f, glm::vec3(-1.0f, 1.3f, 16.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall14));
+    WhiteWall whiteWall15 = WhiteWall(0.25f, 2.6f, 2.0f, glm::vec3(-1.0f, 1.3f, 18.0f));
+    addObject(std::make_shared<WhiteWall>(whiteWall15));
+
+    //Tables
+    Table table1 = Table(0.6f, 1.6f, 0.5f, glm::vec3(-3.0f, 0.8f, 27.5f), true);
+    addObject(std::make_shared<Table>(table1));
+    Table table2 = Table(0.6f, 1.6f, 0.5f, glm::vec3(2.0f, 0.8f, 27.5f), true);
+    addObject(std::make_shared<Table>(table2));
+    Table table3 = Table(1.0f, 0.6f, 0.5f, glm::vec3(1.0f, 0.3f, 18.5f), false);
+    addObject(std::make_shared<Table>(table3));
+    Table table4 = Table(1.2f, 0.6f, 0.5f, glm::vec3(0.0f, 0.3f, 6.5f), false);
+    addObject(std::make_shared<Table>(table4));
+    Table table5 = Table(1.2f, 0.6f, 0.5f, glm::vec3(2.0f, 0.3f, -3.5f), false);
+    addObject(std::make_shared<Table>(table5));
+    Table table6 = Table(1.0f, 0.6f, 0.5f, glm::vec3(4.0f, 0.3f, -12.0f), false);
+    addObject(std::make_shared<Table>(table6));
+    Table table7 = Table(1.0f, 0.6f, 0.5f, glm::vec3(-1.0f, 0.3f, -11.0f), false);
+    addObject(std::make_shared<Table>(table7));
+    Table table8 = Table(1.2f, 0.6f, 0.5f, glm::vec3(2.0f, 0.3f, -17.5f), false);
+    addObject(std::make_shared<Table>(table8));
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {

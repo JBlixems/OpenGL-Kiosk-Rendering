@@ -17,7 +17,7 @@ struct Material {
 in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
-in vec4 Color; // Get the color from the vertex shader
+in vec4 Color; 
 
 out vec4 FragColor;
 
@@ -25,11 +25,12 @@ uniform DirLight dirLight;
 uniform Material material;
 uniform sampler2D texture_diffuse;
 uniform bool useColor;
+uniform vec3 viewPos;
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
     vec3 color = Color.rgb;
-    vec3 lightDir = normalize(-light.direction);
+    vec3 lightDir = -light.direction;
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
@@ -43,9 +44,8 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 
 void main()
 {
-    vec3 norm = normalize(Normal);
-    vec3 viewDir = normalize(-FragPos); // Assuming the view position is at the origin
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 result = CalcDirLight(dirLight, Normal, viewDir);
 
     if(useColor){
         FragColor = vec4(result, Color.a);

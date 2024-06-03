@@ -70,11 +70,10 @@ inline GLFWwindow *setUp()
 }
 
 void setupLighting(Shader &shader) {
-    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-    // glm::vec3 lightAmbient = glm::vec3(0.3f, 0.3f, 0.1f);
+    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, -0.3f);
     glm::vec3 lightAmbient = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightDiffuse = glm::vec3(0.8f, 0.8f, 0.8f);
-    glm::vec3 lightSpecular = glm::vec3(1.0f, 1.0f, 0.8f);
+    glm::vec3 lightDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 lightSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
 
     shader.use();
     shader.setVec3("dirLight.direction", lightDir);
@@ -148,7 +147,7 @@ int main()
 
     Shader shader("vertex.glsl", "fragment.glsl");
     Scene scene;
-    Camera camera(glm::vec3(0.0f, 1.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+    Camera camera(glm::vec3(0.0f, 10.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 
     glClearColor(0.79f, 0.91f, 0.97f, 1.0f);
     glfwSetKeyCallback(window, key_callback);
