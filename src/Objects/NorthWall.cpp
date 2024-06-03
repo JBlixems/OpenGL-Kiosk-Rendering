@@ -26,12 +26,14 @@ NorthWall::NorthWall(float width, float height, float depth, const glm::vec3& po
     bool flip = false;
 
     glm::vec3 normal;
-    if(angle == 0)
+    if(angle == 0 && (position.y < 6.6 || (position.y < 10.7 && position.y > 10)))
+        normal = glm::vec3(0.0f, 1.0f, 0.0f);
+    else if(angle == 0)
         normal = glm::vec3(0.0f, -1.0f, 0.0f);
     else if(right)
-        normal = glm::vec3(1.0f*cos(slantAngle), 1.0f*sin(90 + slantAngle), 0.0f);
+        normal = glm::vec3(cos(slantAngle), sin(slantAngle), 0.0f);
     else
-        normal = glm::vec3(-1.0f*cos(slantAngle), 1.0f*sin(90 - slantAngle), 0.0f);
+        normal = glm::vec3(-cos(slantAngle), sin(slantAngle), 0.0f);
 
     for (int z = 0; z < gridDepth; ++z) {
         for (int x = 0; x < gridWidth; ++x) {            
@@ -156,8 +158,8 @@ void NorthWall::draw(const Shader& shader) const {
     shader.use();
 
     // Set material properties
-    glm::vec3 matAmbient = glm::vec3(0.2f, 0.2f, 0.2f);  // Grey ambient color
-    glm::vec3 matDiffuse = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey diffuse color
+    glm::vec3 matAmbient = glm::vec3(0.8f, 0.8f, 0.8f);  // Grey ambient color
+    glm::vec3 matDiffuse = glm::vec3(0.8f, 0.8f, 0.8f);  // Grey diffuse color
     glm::vec3 matSpecular = glm::vec3(0.8f, 0.8f, 0.8f); // Grey specular color
     float matShininess = 10.0f;  // Shininess factor
 

@@ -135,14 +135,13 @@ void Floor::draw(const Shader& shader) const {
 
     // Set material properties
     glm::vec3 matAmbient = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey ambient color
-    glm::vec3 white = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 matDiffuse = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey diffuse color
     glm::vec3 matSpecular = glm::vec3(0.5f, 0.5f, 0.5f); // Grey specular color
-    float matShininess = 100.0f;  // Shininess factor
+    float matShininess = 0.2f;  // Shininess factor
 
-    shader.setVec3("material.ambient", white);
-    shader.setVec3("material.diffuse", white);
-    shader.setVec3("material.specular", white);
+    shader.setVec3("material.ambient", matAmbient);
+    shader.setVec3("material.diffuse", matDiffuse);
+    shader.setVec3("material.specular", matSpecular);
     shader.setFloat("material.shininess", matShininess);
 
     shader.setInt("texture_diffuse", 0);

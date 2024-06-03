@@ -69,17 +69,15 @@ inline GLFWwindow *setUp()
     return window;
 }
 
-void setupLighting(Shader &shader) {
-    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, -0.3f);
-    glm::vec3 lightAmbient = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
+void setupLighting(Shader &shader, int time) {
+    glm::vec3 lightDir = glm::vec3(0.0f, sin(time * 24 * 3.14159 / 180), cos(time * 24 * 3.14159 / 180));
+    glm::vec3 lightColor = glm::vec3(0.8f*cos(time * 24 * 3.14159 / 180), 0.8f*cos(time * 24 * 3.14159 / 180), 0.8f);
 
     shader.use();
     shader.setVec3("dirLight.direction", lightDir);
-    shader.setVec3("dirLight.ambient", lightAmbient);
-    shader.setVec3("dirLight.diffuse", lightDiffuse);
-    shader.setVec3("dirLight.specular", lightSpecular);
+    shader.setVec3("dirLight.ambient", lightColor);
+    shader.setVec3("dirLight.diffuse", lightColor);
+    shader.setVec3("dirLight.specular", lightColor);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -106,7 +104,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 }
 
 // Process keyboard inputs to move the camera
-void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
+void processInput(GLFWwindow *window, Camera &camera, float deltaTime, float &currentTime)
 {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.processKeyboard(GLFW_KEY_W, deltaTime);
@@ -120,6 +118,10 @@ void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
         camera.processKeyboard(GLFW_KEY_LEFT_SHIFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
         camera.processKeyboard(GLFW_KEY_LEFT_CONTROL, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS)
+        currentTime += 0.1;
+    if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS)
+        currentTime -= 0.1;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -160,16 +162,18 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    setupLighting(shader);
+    float currentDayTime = 0;
 
     double lastTime = glfwGetTime();
 
     do{
+        setupLighting(shader, currentDayTime);
+
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        processInput(window, camera, deltaTime);
+        processInput(window, camera, deltaTime, currentDayTime);
 
         scene.updateFrustum(camera.getProjectionMatrix(), camera.getViewMatrix());
         shader.use();

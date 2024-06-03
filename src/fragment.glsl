@@ -35,9 +35,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    vec3 ambient = light.ambient * color; // Use vertex color for ambient lighting
-    vec3 diffuse = light.diffuse * (diff * color); // Use vertex color for diffuse lighting
-    vec3 specular = light.specular * (spec * material.specular);
+    vec3 ambient = light.ambient * color;
+    vec3 diffuse = light.diffuse * (diff * color);
+    vec3 specular = light.specular * (spec * color);
 
     return (ambient + diffuse + specular);
 }
