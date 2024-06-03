@@ -264,6 +264,28 @@ Scene::Scene() {
     addObject(std::make_shared<Table>(table7));
     Table table8 = Table(1.2f, 0.6f, 0.5f, glm::vec3(2.0f, 0.3f, -17.5f), false);
     addObject(std::make_shared<Table>(table8));
+
+    //PlantPots
+    PlantPot plantPot1 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(0.2f, 0.0f, 10.0f));
+    addObject(std::make_shared<PlantPot>(plantPot1));
+    PlantPot plantPot2 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(1.7f, 0.0f, 10.0f));
+    addObject(std::make_shared<PlantPot>(plantPot2));
+
+    PlantPot plantPot3 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(2.2f, 0.0f, -1.0f));
+    addObject(std::make_shared<PlantPot>(plantPot3));
+    PlantPot plantPot4 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(3.7f, 0.0f, -1.0f));
+    addObject(std::make_shared<PlantPot>(plantPot4));
+
+    PlantPot plantPot5 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(0.7f, 0.0f, -13.8f));
+    addObject(std::make_shared<PlantPot>(plantPot5));
+    PlantPot plantPot6 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(3.7f, 0.0f, -9.7f));
+    addObject(std::make_shared<PlantPot>(plantPot6));
+
+    PlantPot plantPot7 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(-2.0f, 0.0f, -19.0f));
+    addObject(std::make_shared<PlantPot>(plantPot7));
+    PlantPot plantPot8 = PlantPot(0.6f, 1.5f, 0.6f, glm::vec3(-2.0f, 0.0f, -20.5f));
+    addObject(std::make_shared<PlantPot>(plantPot8));
+
 }
 
 void Scene::addObject(const std::shared_ptr<Drawable>& object) {

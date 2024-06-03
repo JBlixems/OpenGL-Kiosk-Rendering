@@ -14,6 +14,8 @@
 #include "Objects/Roof.h"
 #include "Objects/WhiteWall.h"
 #include "Objects/Table.h"
+#include "Objects/PlantPot.h"
+#include "Objects/Chair.h"
 
 class Scene {
 public:
