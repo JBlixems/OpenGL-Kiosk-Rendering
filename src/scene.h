@@ -16,6 +16,7 @@
 #include "Objects/Table.h"
 #include "Objects/PlantPot.h"
 #include "Objects/Chair.h"
+#include "Objects/PlainPrism.h"
 
 class Scene {
 public:

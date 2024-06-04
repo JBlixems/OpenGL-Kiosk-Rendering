@@ -1,5 +1,5 @@
-#ifndef ROOF_H
-#define ROOF_H
+#ifndef PLAINPRISM_H
+#define PLAINPRISM_H
 
 #include <vector>
 #include <GL/glew.h>
@@ -8,16 +8,15 @@
 #include "drawable.h"
 #include "../include/stb_image.h"
 
-class Roof: public Drawable {
+class PlainPrism: public Drawable {
 public:
-    Roof(float radius, float width, const glm::vec3& position, unsigned int numStrips);
-    void addCylinderVertices(float radius, float width, const glm::vec3& position, const glm::vec4& color);
+    PlainPrism(float width, float height, float depth, const glm::vec3& position, glm::vec4 color);
+    void addPrismVertices(float x0, float y0, float x1, float y1, float z0, float z1, const glm::vec4& color);
     glm::vec3 getBoundingBoxMin() const override;
     glm::vec3 getBoundingBoxMax() const override;
     void computeBoundingBox();
 
     void draw(const Shader& shader) const;
-    float radius;
 
 private:
     std::vector<Vertex> vertices;
@@ -26,12 +25,12 @@ private:
     unsigned int textureID;
 
     float width, height, depth;
+    float radius;
     glm::vec3 position;
 
     void setupMesh();
-    void loadTexture(const char* texturePath);
     glm::vec3 boundingBoxMin;
     glm::vec3 boundingBoxMax;
 };
 
-#endif // WINDOW_H
+#endif

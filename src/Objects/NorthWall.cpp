@@ -158,10 +158,10 @@ void NorthWall::draw(const Shader& shader) const {
     shader.use();
 
     // Set material properties
-    glm::vec3 matAmbient = glm::vec3(0.8f, 0.8f, 0.8f);  // Grey ambient color
-    glm::vec3 matDiffuse = glm::vec3(0.8f, 0.8f, 0.8f);  // Grey diffuse color
+    glm::vec3 matAmbient = glm::vec3(0.2f, 0.2f, 0.2f);  // Grey ambient color
+    glm::vec3 matDiffuse = glm::vec3(0.5f, 0.5f, 0.5f);  // Grey diffuse color
     glm::vec3 matSpecular = glm::vec3(0.8f, 0.8f, 0.8f); // Grey specular color
-    float matShininess = 10.0f;  // Shininess factor
+    float matShininess = 0.7f;  // Shininess factor
 
     shader.setVec3("material.ambient", matAmbient);
     shader.setVec3("material.diffuse", matDiffuse);

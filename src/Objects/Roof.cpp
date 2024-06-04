@@ -171,8 +171,8 @@ void Roof::loadTexture(const char* path) {
 
 // Function to compute bounding box of the window
 void Roof::computeBoundingBox() {
-    boundingBoxMin = position - glm::vec3(width / 2.0f, radius, -80.0f);
-    boundingBoxMax = position + glm::vec3(width / 2.0f, radius, depth);
+    boundingBoxMin = position - glm::vec3(-80.0f, -80.0f, -80.0f);
+    boundingBoxMax = position + glm::vec3(80.0f, 80.0f, 80.0f);
 }
 
 // Function to get minimum bounding box coordinates

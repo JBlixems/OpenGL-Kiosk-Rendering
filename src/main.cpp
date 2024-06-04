@@ -70,7 +70,7 @@ inline GLFWwindow *setUp()
 }
 
 void setupLighting(Shader &shader, int time) {
-    glm::vec3 lightDir = glm::vec3(0.0f, sin(time * 24 * 3.14159 / 180), cos(time * 24 * 3.14159 / 180));
+    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, cos(time * 24 * 3.14159 / 180));
     glm::vec3 lightColor = glm::vec3(0.8f*cos(time * 24 * 3.14159 / 180), 0.8f*cos(time * 24 * 3.14159 / 180), 0.8f);
 
     shader.use();
