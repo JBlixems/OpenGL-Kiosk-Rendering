@@ -160,13 +160,21 @@ Scene::Scene() {
     PlainPrism cafeteriaTable4 = PlainPrism(8.0f, 1.5f, 0.2f, glm::vec3(-0.1f, 2.0f, -29.7f), glm::vec4(0.2, 0.2, 0.2, 1));
     addObject(std::make_shared<PlainPrism>(cafeteriaTable4));
 
+    PlainPrism cafeteriaTable5 = PlainPrism(0.6f, 0.6f, 0.8f, glm::vec3(3.5f, 0.8f, -29.0f), glm::vec4(0.7, 0.3, 0.3, 1));
+    addObject(std::make_shared<PlainPrism>(cafeteriaTable5));
+
     //White floor underneath
     PlainPrism whiteFloor = PlainPrism(30.0f, 0.1f, 60.0f, glm::vec3(0.0f, -1.2f, -40.0f), glm::vec4(0.5, 0.5, 0.5, 1));
     addObject(std::make_shared<PlainPrism>(whiteFloor));
 
     //Black side walls
-    PlainPrism blackWall1 = PlainPrism(30.0f, 25.0f, 0.1f, glm::vec3(0.0f, 6.5f, -32.0f), glm::vec4(0.1, 0.1, 0.1, 1));
+    PlainPrism blackWall1 = PlainPrism(30.0f, 25.0f, 0.1f, glm::vec3(0.0f, 6.5f, -32.0f), glm::vec4(0.3, 0.3, 0.3, 1));
     addObject(std::make_shared<PlainPrism>(blackWall1));
+    PlainPrism blackWall55 = PlainPrism(30.0f, 4.0f, 1.0f, glm::vec3(0.0f, 10.5f, -32.0f), glm::vec4(0.6, 0.6, 0.6, 1));
+    addObject(std::make_shared<PlainPrism>(blackWall55));
+    PlainPrism blackWall56 = PlainPrism(30.0f, 4.0f, 1.0f, glm::vec3(0.0f, 4.5f, -32.0f), glm::vec4(0.6, 0.6, 0.6, 1));
+    addObject(std::make_shared<PlainPrism>(blackWall56));
+
     PlainPrism blackWall2 = PlainPrism(30.0f, 25.0f, 0.1f, glm::vec3(0.0f, 6.5f, 35.0f), glm::vec4(0.1, 0.1, 0.1, 1));
     addObject(std::make_shared<PlainPrism>(blackWall2));
     PlainPrism blackWall3 = PlainPrism(0.1f, 25.0f, 80.0f, glm::vec3(15.0f, 3.5f, -35.0f), glm::vec4(0.1, 0.1, 0.1, 1));
@@ -174,7 +182,15 @@ Scene::Scene() {
     PlainPrism blackWall4 = PlainPrism(0.1f, 25.0f, 80.0f, glm::vec3(-15.0f, 3.5f, -35.0f), glm::vec4(0.1, 0.1, 0.1, 1));
     addObject(std::make_shared<PlainPrism>(blackWall4));
 
+    //Chairs
+    Chair chair1 = Chair(0.7f, 1.3f, 0.7f, glm::vec3(-3.0f, 1.1f, 26.0f), glm::vec4(0.3, 0.3, 0.3, 1));
+    addObject(std::make_shared<Chair>(chair1));
 
+    Chair chair2 = Chair(0.7f, 1.3f, 0.7f, glm::vec3(-1.0f, 1.1f, 26.0f), glm::vec4(0.3, 0.3, 0.3, 1));
+    addObject(std::make_shared<Chair>(chair2));
+
+    Chair chair3 = Chair(0.7f, 1.3f, 0.7f, glm::vec3(3.0f, 1.1f, 26.0f), glm::vec4(0.3, 0.3, 0.3, 1));
+    addObject(std::make_shared<Chair>(chair3));
 
 
 

@@ -11,6 +11,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "include/imgui/imgui.h"
+#include "include/imgui/imgui_impl_opengl3.h"
+#include "include/imgui/imgui_impl_glfw.h"
 #include "shader.hpp"
 #include "Objects/Drone.h"
 #include "Objects/Camera.h"
@@ -19,8 +22,8 @@
 using namespace glm;
 using namespace std;
 
-const float SCREEN_HEIGHT = 1300;
-const float SCREEN_WIDTH = 2000;
+const float SCREEN_HEIGHT = 1000;
+const float SCREEN_WIDTH = 1700;
 
 const char *getError()
 {
@@ -70,8 +73,8 @@ inline GLFWwindow *setUp()
 }
 
 void setupLighting(Shader &shader, int time) {
-    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, cos(time * 24 * 3.14159 / 180));
-    glm::vec3 lightColor = glm::vec3(0.8f*cos(time * 24 * 3.14159 / 180), 0.8f*cos(time * 24 * 3.14159 / 180), 0.8f);
+    glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, cos(time * 24 * 3.14159 / 360));
+    glm::vec3 lightColor = glm::vec3(0.5f*cos(time * 24 * 3.14159 / 360), 0.5f*cos(time * 24 * 3.14159 / 360), 0.5f);
 
     shader.use();
     shader.setVec3("dirLight.direction", lightDir);
@@ -153,6 +156,12 @@ int main()
     Scene scene;
     Camera camera(glm::vec3(0.0f, 10.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    // Initialize ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
     glClearColor(0.79f, 0.91f, 0.97f, 1.0f);
     glfwSetKeyCallback(window, key_callback);
 
@@ -170,12 +179,39 @@ int main()
     double lastTime = glfwGetTime();
 
     do{
-        setupLighting(shader, currentDayTime);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Start ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        ImGui::Begin("Control Panel", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings);
+        ImGui::Text("Day Time: %i:00:00", ((int) currentDayTime) % 24);
+        ImGui::Text("Enable Drone %s", (enableDrone) ? "True" : "False");
+        ImGui::End();
+
+        ImGui::SetNextWindowSize(ImVec2(300, 200));
+        ImGui::SetNextWindowPos(ImVec2(10, SCREEN_HEIGHT - 50)); // Bottom-left corner
+        ImGui::Begin("Overlay2", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings);
+        ImGui::Text("Position: (%.2f, %.2f, %.2f)", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH - 100, 10)); // Top-left corner
+        ImGui::Begin("Overlay", nullptr, ImGuiWindowFlags_NoTitleBar);
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        ImGui::End();
+        ImGui::EndFrame();
+
+        // Render ImGui
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        setupLighting(shader, currentDayTime);
+
         processInput(window, camera, deltaTime, currentDayTime, enableDrone);
 
         scene.updateFrustum(camera.getProjectionMatrix(), camera.getViewMatrix());
@@ -201,7 +237,13 @@ int main()
         lastTime = currentTime;
         // cout << "FPS: " << 1 / deltaTime << endl;
 
+
+
     } while (glfwGetKey(window, GLFW_KEY_SPACE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0);
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwDestroyWindow(window);
     glfwTerminate();

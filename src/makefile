@@ -1,5 +1,5 @@
 #add all the files that you need to the files makefile variable below as a space seperated list
-files = shader.cpp Objects/*.cpp Helpers/FrustrumCulling.cpp scene.cpp include/stb_image.cpp
+files = shader.cpp Objects/*.cpp Helpers/FrustrumCulling.cpp scene.cpp include/stb_image.cpp include/imgui/*.cpp
 
 main: main.cpp glad.c
 	g++ -g $(files) main.cpp glad.c -lglfw -pthread -lGLEW -ldl -lGL -o main
