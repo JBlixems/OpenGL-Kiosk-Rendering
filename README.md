@@ -1,5 +1,8 @@
 # OpenGL-Kiosk-Rendering
-COS344 Graphics project to design and render the IT buildings' kiosk and cafeteria.
+Graphics project to design and render the IT buildings' kiosk and cafeteria. This was done in a week.
 
 # Goal
 ![](Photos/IMG_0678.jpg)
+
+# Result
+![](Photos/Result.png)
