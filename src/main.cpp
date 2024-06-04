@@ -12,15 +12,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "shader.hpp"
-#include "Objects/Floor.h"
+#include "Objects/Drone.h"
 #include "Objects/Camera.h"
 #include "scene.h"
 
 using namespace glm;
 using namespace std;
 
-const float SCREEN_HEIGHT = 1000;
-const float SCREEN_WIDTH = 1500;
+const float SCREEN_HEIGHT = 1300;
+const float SCREEN_WIDTH = 2000;
 
 const char *getError()
 {
@@ -104,7 +104,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 }
 
 // Process keyboard inputs to move the camera
-void processInput(GLFWwindow *window, Camera &camera, float deltaTime, float &currentTime)
+void processInput(GLFWwindow *window, Camera &camera, float deltaTime, float &currentTime, bool &enableDrone)
 {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.processKeyboard(GLFW_KEY_W, deltaTime);
@@ -122,6 +122,8 @@ void processInput(GLFWwindow *window, Camera &camera, float deltaTime, float &cu
         currentTime += 0.1;
     if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS)
         currentTime -= 0.1;
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) 
+        enableDrone = !enableDrone;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -149,7 +151,7 @@ int main()
 
     Shader shader("vertex.glsl", "fragment.glsl");
     Scene scene;
-    Camera camera(glm::vec3(0.0f, 10.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+    Camera camera(glm::vec3(0.0f, 10.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     glClearColor(0.79f, 0.91f, 0.97f, 1.0f);
     glfwSetKeyCallback(window, key_callback);
@@ -163,6 +165,7 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     float currentDayTime = 0;
+    bool enableDrone = false;
 
     double lastTime = glfwGetTime();
 
@@ -173,7 +176,7 @@ int main()
         float deltaTime = currentTime - lastTime;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        processInput(window, camera, deltaTime, currentDayTime);
+        processInput(window, camera, deltaTime, currentDayTime, enableDrone);
 
         scene.updateFrustum(camera.getProjectionMatrix(), camera.getViewMatrix());
         shader.use();
@@ -181,6 +184,14 @@ int main()
         shader.setMat4("projection", camera.getProjectionMatrix());
         shader.setMat4("model", glm::mat4(1.0f));
         shader.setVec3("viewPos", camera.getPosition());
+
+        if(enableDrone){
+            glm::vec3 dronePos = camera.getPosition() + 2.0f*camera.getFront();
+            Drone d = Drone(0.4, 0.25, 0.8, dronePos);
+
+            // camera.setPosition(camera.getPosition() - 2.0f*camera.getFront());
+            d.draw(shader);
+        }
 
         scene.render(shader, camera);
 

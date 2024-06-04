@@ -1,9 +1,13 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch, float width, float height)
     : position(position), worldUp(up), yaw(yaw), pitch(pitch), movementSpeed(3.5f), mouseSensitivity(0.0025f) {
     updateCameraVectors();
-    setProjection(80.0f, 1500.0f / 1000.0f, 0.1f, 100.0f);
+    setProjection(80.0f, width / height, 0.1f, 100.0f);
+}
+
+void Camera::setPosition(glm::vec3 position) {
+    this->position = position;
 }
 
 glm::mat4 Camera::getViewMatrix() const {
@@ -12,6 +16,10 @@ glm::mat4 Camera::getViewMatrix() const {
 
 glm::mat4 Camera::getProjectionMatrix() const {
     return projectionMatrix;
+}
+
+glm::vec3 Camera::getFront() const{
+    return front;
 }
 
 void Camera::setProjection(float fov, float aspect, float near, float far) {
